@@ -1,0 +1,24 @@
+{% extends "../layout.html" %}
+
+{% block title %} Actualizacion del Usuario {% endblock %}
+
+{% block body %}
+
+<form action="/editarUser" method="post">{%   csrf_token %}
+    <input type="hidden" name="txtid" value="{{ user.idUser }}" >
+    <input type="text" name="txtNom" id="txtNom" value="{{ user.nomUser }}" placeholder="Nombre" required><br>
+    <input type="text" name="txtApel" id="txtApel" value="{{ user.apelUser }}" placeholder="Apellido" required><br>
+    <select name="slcTip" id="slcTip">
+        <option value="{{ user.idtipDoc}}">Antes</option>
+        <option value="1">CC</option>
+        <option value="2">CE</option>
+        <option value="3">PA</option>
+    </select>
+    <input type="text" name="txtDoc" id="txtDoc" value="{{ user.numDocUser }}" placeholder="Numero Documento" required><br>
+    <input type="text" name="txtMail" id="txtMail" value="{{ user.CorreoUser }}" placeholder="Correo" required><br>
+    <input type="text" name="txtPass" id="txtPass" value="{{ user.Pass }}" placeholder="Contrasena" required><br>
+    <input type="text" name="txtdir" id="txtdir" value="{{ user.DirUser }}" placeholder="Direccion" required><br>
+    <button type="submit">Agregar</button>
+</form>
+
+{% endblock%}

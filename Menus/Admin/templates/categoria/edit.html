@@ -1,0 +1,15 @@
+{% extends "../layout.html" %}
+
+{% block title %} Actualizacion de la categoria {% endblock %}
+
+{% block body %}
+<h1> Actualizar Categoria</h1>
+
+    <form action="/editarCat" method="post">{% csrf_token %}
+        <input type="hidden" name="txtid" value="{{ categorie.idCategoria}}">
+        <input type="text" name="txtNom" value="{{ categorie.NomCat }}" placeholder="Nombre" required><br>
+        <input type="number" name="txtEst" value="{{categorie.estado}}" min="0" max="2" placeholder="estado" required><br>
+        <button type="submit">Agregar</button>
+    </form>
+
+{% endblock%}

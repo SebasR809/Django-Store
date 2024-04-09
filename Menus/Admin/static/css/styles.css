@@ -1,0 +1,52 @@
+.dataTable-top
+{
+    position: relative;
+    display: flex;
+}
+  
+.dataTable-input 
+{
+    margin: 0 0 0 150%;
+    border-radius: 8px;
+    border: solid #b1b3b5 1px;
+    background-color: white;
+    
+}
+
+.dataTable-input:focus 
+{
+    border: solid #0d3048 1px;
+    outline: none;
+}
+  
+.dataTable-selector 
+{
+    border-radius: 10px;
+    border: solid gray 1px;
+    color: gray;
+}
+  
+.dataTable-bottom
+{
+    padding: 20px 20px;
+}
+.dataTable-pagination a 
+{
+    background-color: #e3e1e14f;
+    color: gray;
+    border-radius: 50%;
+}
+  
+.dataTable-pagination a:hover {
+     background-color: #060025;
+     color: gray;
+    border-radius: 50%;
+     cursor: default;
+     outline: none;
+}
+
+th, td
+{
+    text-align: center;
+    vertical-align: middle;
+}

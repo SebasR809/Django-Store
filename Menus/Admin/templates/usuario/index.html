@@ -1,0 +1,80 @@
+{% extends "../layout.html" %}
+
+{% block title %} Gestión de Usuarios {% endblock %}
+
+{% block body %}
+
+<div class="row text-center">
+    <h1>Usuarios</h1>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-xl-3 m-0">
+        <div class="card">
+            <div class="card-title text-center pt-2">
+                <h5>Agregar Usuario</h5>
+            </div>
+            <div class="card-body">
+                <form action="/AddUser" method="post">{%   csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="txtNom" id="txtNom" placeholder="Nombre" class="form-control" required><br>
+                        <input type="text" name="txtApel" id="txtApel" placeholder="Apellido" class="form-control" required><br>
+                        <select name="slcTip" id="slcTip" class="form-control">
+                            {% for t in doc%}
+                                <option value="{{ t.idTipDoc }}">{{ t.nomTipDoc }}</option>
+                            {% endfor %}
+                        </select><br>
+                        <input type="text" name="txtDoc" id="txtDoc" placeholder="Numero Documento" class="form-control" required><br>
+                        <input type="text" name="txtdir" id="txtdir" placeholder="Direccion"  class="form-control" required><br>
+                        <input type="text" name="txtMail" id="txtMail" placeholder="Correo" class="form-control"  required><br>
+                        <input type="password" name="txtPass" id="txtPass" placeholder="Contrasena" class="form-control"  required><br>
+                        <center>
+                            <button type="submit" class="btn btn-success btn-lg text-white">Agregar</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class=" col-sm-12 col-md-0 col-lg-9 col-xl-9">
+        <div class="card mt-3 p-3">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped" id="dataList">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Tip.Doc</th>
+                            <th>Documento</th>
+                            <th>Correo</th>
+                            <th>Direccion</th>
+                            <th colspan="2">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%  for user in users %}
+                            <tr>
+                                <td>{{ user.idUser }}</td>
+                                <td>{{ user.nomUser }}</td>
+                                <td>{{ user.apelUser }}</td>
+                                <td>{{ user.idTipDoc }}</td>
+                                <td>{{ user.numDocUser }}</td>
+                                <td>{{ user.CorreoUser }}</td>
+                                <td>{{ user.DirUser }}</td>
+                                <td>
+                                    <a href="editUser/{{ user.idUser }}" class="btn btn-info text-white">Editar</a>
+                                    <a href="deleteUser/{{ user.idUser }}" class="btn btn-danger">Borrar</a>
+                                </td>
+                            </tr>
+                        {%  endfor%}
+                    </tbody>
+                </table>
+            </div>    
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock%}
+
