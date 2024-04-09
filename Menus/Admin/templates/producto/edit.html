@@ -1,0 +1,84 @@
+{% extends "../layout.html" %}
+
+{% block title %} Eliminar Producto {% endblock %}
+
+{% block body %}
+<div class="row text-center">
+    <h1>Editar Producto</h1>
+</div>
+<div class="row mt-3">
+    <div class="col col-lg-4">
+        <img src="{{ product.imgProd.url }}" alt="">
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="card m-2">
+                <div class="card-tittle p-2">
+                    <h5>GENERAL</h5>
+                </div> 
+                <div class="card-body p-0">
+                    <div class="row">
+                        <form action="/editarProd" method="post">
+                            <input type="hidden" name="txtid" value="{{ product.idProduct }}">
+                            <div class="row">
+                                <div class="col col-lg-4">
+                                    <label for="">Nombre</label>
+                                    <input type="text" name="txtNom" value="{{ product.nomProd }}" class="form-control" placeholder="nombre" required>   
+                                </div>
+                                <div class="col">
+                                    <label for="">Descripcion</label>
+                                    <textarea name="textareaDesc" class="form-control">{{ product.descProd }}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="slcMar">Marca</label>
+                                    <select name="slcMar" id="slcMar" class="form-control">
+                                        <option value="{{ product.idMarca }}">{{ product.idMarca }}</option>
+                                        {% for b in brand%}
+                                            <option value="{{ b.idMarca }}">{{ b.nomMarca }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="slcCat">Categoria</label>
+                                    <select name="slcCat" id="slcCat" class="form-control form-control">
+                                        <option value="{{ product.idCategoria }}">{{ product.idCategoria }}</option>
+                                        {% for c in categorie%}
+                                            <option value="{{ c.idCategoria }}">{{ c.NomCat }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                                <div class="col">
+                                    <label for="">Imagen</label>
+                                    <input type="file" src="imgProd" value="" name="imgProd" alt="">
+                                    <input type="hidden" name="imgProd" value="{{ product.imgProd }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Precio</label>
+                                    <input type="text" name="txtPrecio" value="{{ product.PrecioProd }}"  class="form-control" placeholder="Precio" required>    
+                                </div>
+                                <div class="col">
+                                    <label for="">Cantidad en stock</label>
+                                    <input type="number" name="txtStock" value="{{ product.StockProd }}" class="form-control" placeholder="Cantidad" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>  <hr>
+                <div class="card-tittle p-2">
+                    <h5>DETALLES</h5>
+                </div>
+                <DIV class="row">
+                    <div class="row text-center m-1">
+                        <button type="submit" class="btn btn-success btn-lg text-white">Agregar</button>
+                    </div>
+                </DIV>  
+            </div> 
+        </div>
+    </div>
+</div>
+{% endblock%}

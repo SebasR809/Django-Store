@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 #models
-from .models import Usuario, Categoria, Marca, tipodocumento
+from .models import Usuario, Categoria, Marca, tipodocumento, Producto
 
 def home(request):
     return render(request,"index.html")
@@ -21,6 +21,8 @@ def addUser(request):
     mail = request.POST['txtMail']
     contra = request.POST['txtPass']
     dir = request.POST['txtdir']
+
+    tipDoc = tipodocumento.objects.get(pk=tipDoc)
 
     User = Usuario.objects.create(
         nomUser=nom,
@@ -42,7 +44,8 @@ def deleteUser(request, idUser):
 
 def editUser(request, idUser):
     User = Usuario.objects.get(idUser=idUser)
-    return render(request,'usuario/edit.html', {'user': User})
+    tip = tipodocumento.objects.all()
+    return render(request,'usuario/edit.html', {'user': User, 'tip' : tip})
 
 def editarUser(request):
     idUser = request.POST['txtid']
@@ -53,6 +56,8 @@ def editarUser(request):
     mail = request.POST['txtMail']
     contra = request.POST['txtPass']
     dir = request.POST['txtdir']
+
+    tipDoc = tipodocumento.objects.get(pk=tipDoc)
     
     User = Usuario.objects.get(idUser=idUser)
     User.nomUser = nom
@@ -142,6 +147,49 @@ def editarMar(request):
 
     return redirect('/marcas')
 
+# Productos
+# Administracion de productos
+def prodAdmin(request):
+    prod = Producto.objects.all()
+    marca = Marca.objects.all()
+    cat = Categoria.objects.all()
+    return render(request,'producto/producto.html', {'prod' : prod,'brand' : marca, 'categorie' : cat})
 
+def addProd(request):
+    
+    nom = request.POST.get('txtNom')
+    desc = request.POST.get('textareaDesc')
+    mar = request.POST.get('slcMar')
+    cat = request.POST.get('slcCat')
+    img = request.FILES.get('imgProd')
+    precio = request.POST.get('txtPrecio')
+    cant = request.POST.get('txtStock')
 
+    #Instancias de los otros modelos para guardar la foreign key 
+    mar = Marca.objects.get(pk=mar)
+    cat = Categoria.objects.get(pk=cat)
 
+    Prod = Producto.objects.create(
+        nomProd=nom,
+        descProd=desc,
+        idMarca=mar,
+        idCategoria=cat,
+        imgProd= img,
+        PrecioProd=precio,
+        StockProd=cant,
+        estado = 1
+    )
+
+    return redirect('/productos')
+
+def deleteProd(request, idProduct):
+    Product = Producto.objects.get(idProduct=idProduct)
+    Product.delete()
+
+    return redirect('/productos')
+
+def editProd(request, idProduct):
+    prod = Producto.objects.get(idProduct=idProduct)
+    marca = Marca.objects.all()
+    cat = Categoria.objects.all()
+    return render(request,'producto/edit.html', {'product': prod,'brand' : marca, 'categorie' : cat})

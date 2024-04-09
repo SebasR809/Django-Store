@@ -1,0 +1,105 @@
+{% extends "../layout.html" %}
+
+{% block title %} Gestión de Productos {% endblock %}
+
+{% block body %}
+<div class="row text-center">
+    <h1>Productos</h1>
+</div>
+<div class="row">
+    <div class="card m-2">
+        <div class="card-tittle p-3">
+            <h5>Agregar Nuevo Producto</h5>
+        </div>
+       
+        <div class="card-body p-0">
+            <div class="row">
+                <form action="/addProd" enctype="multipart/form-data" method="post">{% csrf_token %}
+                <div class="row m-3">
+                    <div class="col col-lg-3">
+                        <label for="">Nombre</label>
+                        <input type="text" name="txtNom" class="form-control" placeholder="nombre" required>
+                    </div>
+                    <div class="col col-lg-3">
+                        <label for="">Imagen</label>
+                        <input type="file" src="imgProd" name="imgProd" alt="">    
+                    </div>
+                    <div class="col">
+                        <label for="">Descripcion</label>
+                        <textarea name="textareaDesc" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row m-3">
+                    <div class="col">
+                        <label for="slcMar">Marca</label>
+                        <select name="slcMar" id="slcMar" class="form-control">
+                            {% for b in brand%}
+                                <option value="{{ b.idMarca }}">{{ b.nomMarca }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="slcCat">Categoria</label>
+                        <select name="slcCat" id="slcCat" class="form-control form-control">
+                            {% for c in categorie%}
+                                <option value="{{ c.idCategoria }}">{{ c.NomCat }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="">Precio</label>
+                        <input type="number" name="txtPrecio"  class="form-control" placeholder="Precio" required>    
+                    </div>
+                    <div class="col">
+                        <label for="">Cantidad en stock</label>
+                        <input type="number" name="txtStock"  class="form-control" placeholder="Cantidad" required>
+                    </div>
+                </div>
+                <div class="row text-center m-4">
+                    <button type="submit" class="btn btn-success btn-lg text-white">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row mt-5">
+    <div class="card m-3 p-3">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped" id="dataList">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Marca</th>
+                        <th>Categoria</th>
+                        <th>Stock</th>
+                        <th>Detalles</th>
+                        <th>Estado</th>
+                        <th colspan="3">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%  for p in prod%}
+                        <tr>
+                            <td>{{  p.idProduct}}</td>
+                            <td>{{  p.nomProd}}</td>
+                            <td>{{  p.idMarca}}</td>
+                            <td>{{  p.idCategoria}}</td>
+                            <td>{{  p.StockProd}}</td>
+                            <td>Si</td>
+                            <td>{{  p.estado}}</td>
+                            <td>
+                                <a href="">Ver Detalles</a>
+                                <a href="editProd/{{ p.idProduct }}" class="btn btn-info text-white">Editar</a>
+                                <a href="deleteProd/{{ p.idProduct }}" class="btn btn-danger">Borrar</a>
+                            </td>
+                        </tr>
+                    {%  endfor%}
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>
+        
+{% endblock%}

@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.conf import settings
+from django.contrib.staticfiles.urls import static
+
 urlpatterns = [
     path('', views.home, name="index"),
     #Acciones Usuarios
@@ -21,4 +24,11 @@ urlpatterns = [
     path('deleteMar/<idMarca>', views.deleteMar),
     path('editMar/<idMarca>', views.editMar),
     path('editarMar', views.editarMar),
-]
+
+    #Productos
+    #Gestion Productos
+    path('productos', views.prodAdmin, name='productos'),
+    path('addProd', views.addProd),
+    path('deleteProd/<idProduct>', views.deleteProd),
+    path('editProd/<idProduct>', views.editProd)
+] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
