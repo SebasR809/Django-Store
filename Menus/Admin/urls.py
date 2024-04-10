@@ -24,11 +24,22 @@ urlpatterns = [
     path('deleteMar/<idMarca>', views.deleteMar),
     path('editMar/<idMarca>', views.editMar),
     path('editarMar', views.editarMar),
-
     #Productos
     #Gestion Productos
     path('productos', views.prodAdmin, name='productos'),
     path('addProd', views.addProd),
     path('deleteProd/<idProduct>', views.deleteProd),
-    path('editProd/<idProduct>', views.editProd)
+    path('editProd/<idProduct>', views.editProd),
+    path('publicProd/<idProduct>', views.publicProd),
+    path('notpublicProd/<idProduct>', views.notpublicProd),
+    path('editarProd', views.editarProd),
+    #Gestion Detalles
+    path('detProdAdmin/<idProduct>', views.detProdAdmin, name='detallesProduct'),
+    path('addDetailProd', views.addDetailProd),
+
+    #Tienda Virtual
+    path('tienda', views.shopAdmin, name='tienda'),
+    path('detalle/<idProduct>', views.prodCompra)
+    
+
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

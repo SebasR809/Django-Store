@@ -3,13 +3,29 @@
 {% block title %} Actualizacion de la marca {% endblock %}
 
 {% block body %}
-<h1> Actualizar Marca</h1>
-
+<div class="row text-center">
+    <h1>Editar Marca</h1>
+</div>
+<div class="row text-center mt-5">
     <form action="/editarMar" method="post">{% csrf_token %}
-        <input type="hidden" name="txtid" value="{{ brand.idMarca}}">
-        <input type="text" name="txtNom" value="{{ brand.nomMarca }}" placeholder="Nombre" required><br>
-        <input type="number" name="txtEst" value="{{brand.estado}}" min="0" max="2" placeholder="estado" required><br>
-        <button type="submit">Agregar</button>
+        <div class="row">
+            <input type="hidden" name="txtid" value="{{ brand.idMarca}}">
+        <div class="col">
+            <input type="text" class="form-control" name="txtNom" value="{{ brand.nomMarca }}" placeholder="Nombre" required><br>
+        </div>
+        <div class="col">
+            <select name="txtEst" class="form-control">
+                <option value="{{ brand.estado }}">{{ brand.estado }}</option>
+                <option value="1">Activo</option>
+                <option value="0">Desactivado</option>
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success btn-lg text-white">Actualizar</button>
+        </div>
+        </div>
     </form>
+</div>
+    
 
 {% endblock%}

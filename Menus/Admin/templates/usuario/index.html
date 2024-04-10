@@ -48,6 +48,7 @@
                             <th>Documento</th>
                             <th>Correo</th>
                             <th>Direccion</th>
+                            <th>Estado</th>
                             <th colspan="2">Acciones</th>
                         </tr>
                     </thead>
@@ -61,6 +62,13 @@
                                 <td>{{ user.numDocUser }}</td>
                                 <td>{{ user.CorreoUser }}</td>
                                 <td>{{ user.DirUser }}</td>
+                                <td>
+                                    {% if user.estado == 1 %}    
+                                        <p class="text-success">  Activo  </p>
+                                    {% else %}
+                                        <p class="text-danger">Inhabilitado</p>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <a href="editUser/{{ user.idUser }}" class="btn btn-info text-white">Editar</a>
                                     <a href="deleteUser/{{ user.idUser }}" class="btn btn-danger">Borrar</a>

@@ -3,29 +3,69 @@
 {% block title %} Actualizacion del Usuario {% endblock %}
 
 {% block body %}
-
-<form action="/editarUser" method="post">{%   csrf_token %}
-    <input type="hidden" name="txtid" value="{{ user.idUser }}" >
-    <input type="text" name="txtNom" id="txtNom" value="{{ user.nomUser }}" placeholder="Nombre" required><br>
-    <input type="text" name="txtApel" id="txtApel" value="{{ user.apelUser }}" placeholder="Apellido" required><br>
-    <select name="slcTip" id="slcTip">
-        <option value="{{ user.idTipDoc}}">{{ user.codTipDoc  }}</option>
-        {%  for t in tip %}
-            <option value="{{ t.idTipDoc}}">{{ t.codTipDoc}}</option>
-        {%  endfor %}
-    </select>
-    <input type="text" name="txtDoc" id="txtDoc" value="{{ user.numDocUser }}" placeholder="Numero Documento" required><br>
-    <input type="mail" name="txtMail" id="txtMail" value="{{ user.CorreoUser }}" placeholder="Correo" required><br>
-    <input type="password" name="txtPass" id="txtPass" value="{{ user.Pass }}" placeholder="Contrasena" required><br>
-    <input type="text" name="txtdir" id="txtdir" value="{{ user.DirUser }}" placeholder="Direccion" required><br>
-    <select name="estado">
-        <option value="{{ user.estado }}">{{ user.estado }}</option>
-        
-        <option value="">Activo</option>
-            <option value="">Desactivado</option>
-        
-    </select><br>
-    <button type="submit">Agregar</button>
-</form>
-
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-xl-6 m-0">
+        <div class="card">
+            <form action="/editarUser" method="post">{%   csrf_token %}
+                <div class="row p-2">
+                    <div class="col">
+                        <input type="hidden" class="form-control" name="txtid" value="{{ user.idUser }}" >
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" name="txtNom" id="txtNom" value="{{ user.nomUser }}" placeholder="Nombre" required><br>
+                    </div>
+                    <div class="col">
+                        <label>Apellido</label>
+                        <input type="text" class="form-control" name="txtApel" id="txtApel" value="{{ user.apelUser }}" placeholder="Apellido" required><br>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col col-lg-3">
+                        <label for="">Tip.Doc</label>
+                        <select name="slcTip" id="slcTip" class="form-control">
+                            <option value="{{ user.idTipDoc}}">{{ user.codTipDoc  }}</option>
+                            {%  for t in tip %}
+                                <option value="{{ t.idTipDoc}}">{{ t.codTipDoc}}</option>
+                            {%  endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label>Documento</label>
+                        <input type="text" class="form-control" name="txtDoc" id="txtDoc" value="{{ user.numDocUser }}" placeholder="Numero Documento" required><br>
+                    </div>
+                    <div class="col">
+                        <label>Estado</label><br>
+                        <select name="estado" class="form-control">
+                            <option value="{{ user.estado }}">{{ user.estado }}</option>
+                            <option value="1">Activo</option>
+                            <option value="0">Desactivado</option>
+                        </select><br>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col">
+                        <label>Correo</label>
+                        <input type="mail" class="form-control" name="txtMail" id="txtMail" value="{{ user.CorreoUser }}" placeholder="Correo" required><br>
+                    </div>
+                    <div class="col">
+                        <label>Direccion</label>
+                        <input type="text" class="form-control" name="txtdir" id="txtdir" value="{{ user.DirUser }}" placeholder="Direccion" required><br>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col">
+                        <label>Contrasena</label>
+                        <input type="password" class="form-control" name="txtPass" id="txtPass" value="{{ user.Pass }}" placeholder="Contrasena" required><br>
+                    </div>
+                    <div class="col">
+                        <label>confirmar Contrasena</label>
+                        <input type="password" class="form-control" name="txtCPass" id="txtPass" value="{{ user.Pass }}" placeholder="Contrasena" required><br>
+                    </div>
+                </div>
+                <div class="row  p-2 text-center">
+                    <button type="submit"  class="btn btn-success text-white">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock%}

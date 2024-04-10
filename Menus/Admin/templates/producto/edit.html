@@ -5,10 +5,10 @@
 {% block body %}
 <div class="row text-center">
     <h1>Editar Producto</h1>
-</div>
+</div> 
 <div class="row mt-3">
     <div class="col col-lg-4">
-        <img src="{{ product.imgProd.url }}" alt="">
+        <img src="{{ product.imgProd.url }}" alt="" width="100%">
     </div>
     <div class="col">
         <div class="row">
@@ -18,7 +18,7 @@
                 </div> 
                 <div class="card-body p-0">
                     <div class="row">
-                        <form action="/editarProd" method="post">
+                        <form action="/editarProd " method="post">{%   csrf_token %}
                             <input type="hidden" name="txtid" value="{{ product.idProduct }}">
                             <div class="row">
                                 <div class="col col-lg-4">
@@ -29,12 +29,12 @@
                                     <label for="">Descripcion</label>
                                     <textarea name="textareaDesc" class="form-control">{{ product.descProd }}</textarea>
                                 </div>
-                            </div>
+                            </div><br>
                             <div class="row">
                                 <div class="col">
                                     <label for="slcMar">Marca</label>
                                     <select name="slcMar" id="slcMar" class="form-control">
-                                        <option value="{{ product.idMarca }}">{{ product.idMarca }}</option>
+                                        <option value="{{ product.idMarca }}">{{ m.nomMarca }}</option>
                                         {% for b in brand%}
                                             <option value="{{ b.idMarca }}">{{ b.nomMarca }}</option>
                                         {% endfor %}
@@ -43,19 +43,19 @@
                                 <div class="col">
                                     <label for="slcCat">Categoria</label>
                                     <select name="slcCat" id="slcCat" class="form-control form-control">
-                                        <option value="{{ product.idCategoria }}">{{ product.idCategoria }}</option>
-                                        {% for c in categorie%}
-                                            <option value="{{ c.idCategoria }}">{{ c.NomCat }}</option>
+                                        <option value="{{ product.idCategoria }}">{{ c.NomCat }}</option>
+                                        {% for cat in categorie%}
+                                            <option value="{{ cat.idCategoria }}">{{ cat.NomCat }}</option>
                                         {% endfor %}
                                     </select>
 
                                 </div>
                                 <div class="col">
                                     <label for="">Imagen</label>
-                                    <input type="file" src="imgProd" value="" name="imgProd" alt="">
+                                    <input type="file" src="imgProd" value="{{ product.imgProd }}" name="imgProd" alt="">
                                     <input type="hidden" name="imgProd" value="{{ product.imgProd }}">
                                 </div>
-                            </div>
+                            </div><br>
                             <div class="row">
                                 <div class="col">
                                     <label for="">Precio</label>
@@ -65,18 +65,53 @@
                                     <label for="">Cantidad en stock</label>
                                     <input type="number" name="txtStock" value="{{ product.StockProd }}" class="form-control" placeholder="Cantidad" required>
                                 </div>
-                            </div>
+                            </div><br>
+                            <DIV class="row">
+                                <div class="row text-center m-1">
+                                    <button type="submit" class="btn btn-success btn-lg text-white">Actualizar</button>
+                                </div>
+                            </DIV><br>
                         </form>
                     </div>
                 </div>  <hr>
                 <div class="card-tittle p-2">
                     <h5>DETALLES</h5>
-                </div>
-                <DIV class="row">
-                    <div class="row text-center m-1">
-                        <button type="submit" class="btn btn-success btn-lg text-white">Agregar</button>
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <form action="/addDetailProd" method="post">{%   csrf_token %}
+                                <div class="row">
+                                    <input type="hidden" name="txtid" value="{{ product.idProduct }}">
+                                    <div class="col">
+                                        <label for="">Serial</label>
+                                        <input type="text" name="txtserial" value="{{ detal.serial }}" class="form-control" placeholder="Serial" required="">   
+                                    </div>
+                                    <div class="col">
+                                        <label for="">color</label>
+                                        <input type="text" name="txtcol" value="{{ detal.color }}" class="form-control" placeholder="Color">   
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Peso</label>
+                                        <input type="text" name="txtpeso" value="{{ detal.peso }}" class="form-control" placeholder="Peso">   
+                                    </div>
+                                </div><br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Dimension</label>
+                                        <input type="text" name="txtDim" value="{{ detal.dimensiones }}" class="form-control" placeholder="Peso">   
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Otra Imagen</label>
+                                        <input type="file" value="" name="imgExtra" alt=""> 
+                                        <input type="hidden" name="{{ detal.imgExtra }}">
+                                    </div>
+                                </div><br>
+                                <div class="row text-center m-1">
+                                    <button type="submit" class="btn btn-info btn-lg text-white">Actualizar</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </DIV>  
+                </div>
             </div> 
         </div>
     </div>

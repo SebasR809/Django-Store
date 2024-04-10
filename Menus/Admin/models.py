@@ -43,7 +43,7 @@ class Categoria(models.Model):
 
     def __str__(self):
         text = "{0}"
-        return text.format(self.NomCat)
+        return text.format(self.idCategoria)
 
 class Marca(models.Model):
     idMarca = models.AutoField(primary_key=True)
@@ -55,8 +55,8 @@ class Marca(models.Model):
         db_table = 'marca'
 
     def __str__(self):
-        text = "{0}"
-        return text.format(self.nomMarca)
+         text = "{0}"
+         return text.format(self.idMarca)
     
 class Producto(models.Model):
     idProduct = models.AutoField(primary_key=True)
@@ -70,10 +70,32 @@ class Producto(models.Model):
     estado = models.IntegerField(verbose_name='Estado')
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'products'
     
-    
+    def precio(PrecioProd):
+        try:
+            return '{:,.0f}'.format(float(PrecioProd))
+        except(ValueError, TypeError):
+            return PrecioProd
+
     def delete(self, using: None, keep_parents:False):
         self.imgProd.storage.delete(self.imgProd.name)
+        super().delete()
+
+class detallesProd(models.Model):
+    idDetalleProd = models.AutoField(primary_key=True)
+    color = models.CharField(max_length=30)
+    peso = models.CharField(max_length=20)
+    dimensiones =models.CharField(max_length=50)
+    imgExtra = models.ImageField(upload_to='imagenesProd/', null=True)
+    serial = models.CharField(max_length=80)
+    idProduct = models.ForeignKey(Producto, on_delete=models.CASCADE, db_column='idProduct', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detallesprod'
+    
+    def delete(self, using: None, keep_parents:False):
+        self.imgExtra.storage.delete(self.imgExtra.name)
         super().delete()

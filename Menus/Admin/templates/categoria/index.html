@@ -40,7 +40,13 @@
                             <tr>
                                 <!-- <td>{{ cat.idCategoria }}</td> -->
                                 <td>{{ cat.NomCat }}</td>
-                                <td>{{ cat.estado }}</td>
+                                <td>
+                                    {% if cat.estado == 1 %}    
+                                        <p class="text-success">  Activo  </p>
+                                    {% else %}
+                                        <p class="text-danger">Inhabilitado</p>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <a href="editCat/{{ cat.idCategoria }}"  class="btn btn-info text-white" >Editar</a>
                                     <a href="deleteCat/{{ cat.idCategoria }}" class="btn btn-danger text-white" >Eliminar</a>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 #models
-from .models import Usuario, Categoria, Marca, tipodocumento, Producto
+from .models import Usuario, Categoria, Marca, tipodocumento, Producto, detallesProd
 
 def home(request):
     return render(request,"index.html")
@@ -31,7 +31,8 @@ def addUser(request):
         numDocUser=doc,
         CorreoUser=mail,
         Pass=contra,
-        DirUser=dir
+        DirUser=dir,
+        estado = 1
     )
 
     return redirect('/usuarios')
@@ -56,6 +57,7 @@ def editarUser(request):
     mail = request.POST['txtMail']
     contra = request.POST['txtPass']
     dir = request.POST['txtdir']
+    est = request.POST['estado']
 
     tipDoc = tipodocumento.objects.get(pk=tipDoc)
     
@@ -67,6 +69,7 @@ def editarUser(request):
     User.CorreoUser = mail
     User.Pass = contra
     User.DirUser = dir
+    User.estado = est
     User.save()
 
     return redirect('/usuarios')
@@ -151,8 +154,8 @@ def editarMar(request):
 # Administracion de productos
 def prodAdmin(request):
     prod = Producto.objects.all()
-    marca = Marca.objects.all()
-    cat = Categoria.objects.all()
+    marca = Marca.objects.filter(estado=1)
+    cat = Categoria.objects.filter(estado=1)
     return render(request,'producto/producto.html', {'prod' : prod,'brand' : marca, 'categorie' : cat})
 
 def addProd(request):
@@ -177,19 +180,102 @@ def addProd(request):
         imgProd= img,
         PrecioProd=precio,
         StockProd=cant,
-        estado = 1
+        estado = 0
     )
 
     return redirect('/productos')
 
 def deleteProd(request, idProduct):
     Product = Producto.objects.get(idProduct=idProduct)
-    Product.delete()
+    Product.delete(using='default', keep_parents=False)
 
     return redirect('/productos')
 
 def editProd(request, idProduct):
     prod = Producto.objects.get(idProduct=idProduct)
     marca = Marca.objects.all()
+    # m = Marca.objects.get(idMarca = Producto.objects.get(idProduct=idProduct pk))
     cat = Categoria.objects.all()
-    return render(request,'producto/edit.html', {'product': prod,'brand' : marca, 'categorie' : cat})
+    # c = Categoria.objects.get(idCategoria =  Producto.objects.get(idProduct=idProduct)), 'm' : m,  'c' : c
+    detail = detallesProd.objects.filter(idProduct=idProduct).order_by('-idDetalleProd').first()
+    return render(request,'producto/edit.html', {'product': prod,'brand' : marca, 'categorie' : cat, 'detal' : detail})
+
+def editarProd(request):
+    id = request.POST.get('txtid')
+    nom = request.POST.get('txtNom')
+    desc = request.POST.get('textareaDesc')
+    mar = request.POST.get('slcMar')
+    cat = request.POST.get('slcCat')
+    img =  request.POST.get('imgProd')
+    precio = request.POST.get('txtPrecio')
+    cant = request.POST.get('txtStock')
+
+    #Instancias de los otros modelos para guardar la foreign key 
+    mar = Marca.objects.get(pk=mar)
+    cat = Categoria.objects.get(pk=cat)
+
+    prod = Producto.objects.get(idProduct=id)
+    prod.nomProd = nom
+    prod.descProd = desc
+    prod.idMarca = mar
+    prod.idCategoria = cat
+    prod.imgProd = img
+    prod.PrecioProd = precio
+    prod.StockProd = cant
+    prod.save()
+
+    return redirect('/productos') 
+
+def publicProd(request, idProduct):
+    prod = Producto.objects.get(idProduct=idProduct)
+    prod.estado = 0
+    prod.save()
+
+    return redirect('/productos')
+
+def notpublicProd(request, idProduct):
+    prod = Producto.objects.get(idProduct=idProduct)
+    prod.estado = 1
+    prod.save()
+
+    return redirect('/productos')
+
+# Detalles Productos
+def detProdAdmin(request, idProduct):
+    prod = Producto.objects.get(idProduct=idProduct)
+    detail = detallesProd.objects.filter(idProduct=idProduct).order_by('-idDetalleProd').first()
+    return render(request,'producto/detalles.html', {'p':prod, 'd':detail})
+
+def addDetailProd(request):
+
+    prod = request.POST.get('txtid')
+    serial = request.POST.get('txtserial')
+    col = request.POST.get('txtcol')
+    peso = request.POST.get('txtpeso')
+    dim = request.POST.get('txtDim')
+    img = request.FILES.get('imgExtra')
+
+    #Instancias de los otros modelos para guardar la foreign key 
+    prod = Producto.objects.get(pk=prod)
+
+    detail = detallesProd.objects.create(
+        color =col,
+        peso =peso,
+        dimensiones=dim,
+        imgExtra=img,
+        serial=serial,
+        idProduct=prod
+    )
+
+    return redirect('/productos')
+    
+#Tienda Virtual
+def shopAdmin(request):
+    prod = Producto.objects.filter(estado=1).order_by('nomProd')
+    
+    return render(request,'tienda/index.html', {'prod' : prod})
+
+def prodCompra(request, idProduct):
+    prod = Producto.objects.get(idProduct=idProduct)
+    detail = detallesProd.objects.filter(idProduct=idProduct).order_by('-idDetalleProd').first()
+    return render(request,'tienda/producto.html', {'p':prod, 'd':detail})

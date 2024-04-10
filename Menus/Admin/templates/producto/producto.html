@@ -74,9 +74,8 @@
                         <th>Marca</th>
                         <th>Categoria</th>
                         <th>Stock</th>
-                        <th>Detalles</th>
                         <th>Estado</th>
-                        <th colspan="3">Acciones</th>
+                        <th colspan="4">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,13 +83,23 @@
                         <tr>
                             <td>{{  p.idProduct}}</td>
                             <td>{{  p.nomProd}}</td>
-                            <td>{{  p.idMarca}}</td>
+                            <td>{{  p.idMarca }}</td>
                             <td>{{  p.idCategoria}}</td>
                             <td>{{  p.StockProd}}</td>
-                            <td>Si</td>
-                            <td>{{  p.estado}}</td>
                             <td>
-                                <a href="">Ver Detalles</a>
+                                {% if p.estado == 1 %}    
+                                    <p class="text-success">  Publico  </p>
+                                {% else %}
+                                    <p class="text-danger">Inhabilitado</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if p.estado == 1 %}    
+                                    <a href="publicProd/{{ p.idProduct }}" class="btn btn-secondary text-white">Ocultar</a>
+                                {% else %}
+                                    <a href="notpublicProd/{{ p.idProduct }}" class="btn btn-warning text-white"> Publicar</a>
+                                {% endif %}
+                                <a href="detProdAdmin/{{ p.idProduct }}" class="btn btn-primary text-white">Detalles</a>
                                 <a href="editProd/{{ p.idProduct }}" class="btn btn-info text-white">Editar</a>
                                 <a href="deleteProd/{{ p.idProduct }}" class="btn btn-danger">Borrar</a>
                             </td>

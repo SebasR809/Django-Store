@@ -1,0 +1,81 @@
+{% extends "../layout.html" %}
+
+{% block title %} Detalle del Producto {% endblock %}
+
+{% block body %}
+<div class="row text-center">
+    <h1>{{ p.nomProd }}</h1>
+</div>
+<div class="row mt-3">
+    <div class="col col-lg-5">
+        <img src="{{ p.imgProd.url }}" alt="" width="100%">
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="card m-2">
+                <div class="card-tittle p-2">
+                    <h5>GENERAL</h5>
+                </div> 
+                <div class="card-body p-0">
+                    <div class="row">
+                        <p><b>Nombre: </b> {{ p.nomProd }} ({{ p.idCategoria }})</p>
+                        <p><b>Descripcion: </b>{{ p.descProd }}</p>
+                        <p><b>Serial: </b>{{ d.serial }}</p>
+                    </div>
+                </div>    
+                <hr>
+                <div class="card-tittle p-2">
+                    <h5>ESPECIFICACIONES</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col">
+                            <p><b>Marca: </b>{{ p.idMarca }}</p>
+                            <p><b>Color: </b>{{ d.color }}</p>
+                        </div>
+                        <div class="col">
+                            <p><b>Peso: </b>{{ d.peso }}</p>
+                            <p><b>Dimensiones: </b></b>{{ d.dimensiones}}</p>
+                        </div>
+                    </div>
+                </div><hr>
+                <div class="card-tittle p-2">
+                    <h5>COMPRA</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col">
+                            <p><b>Unidades disponibles: </b>{{ p.StockProd}}</p>
+                        </div>
+                        <div class="col">
+                            <center>
+                                <p><b>PRECIO</b></p>
+                                <p>${{ p.PrecioProd|floatformat:"-3g" }}</p>
+                            </center>
+                        </div>
+                    </div>
+                </div><hr>
+                <button type="submit" class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#menucompra">Comprar</button>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<div class="modal fade" id="menucompra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock%}

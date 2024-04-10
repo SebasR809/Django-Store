@@ -42,7 +42,13 @@
                             <tr>
                                 <!-- <td>{{ br.idMarca }}</td> -->
                                 <td>{{ br.nomMarca }}</td>
-                                <td>{{ br.estado }}</td>
+                                <td>
+                                    {% if br.estado == 1 %}    
+                                        <p class="text-success">  Activo  </p>
+                                    {% else %}
+                                        <p class="text-danger">Inhabilitado</p>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <a href="editMar/{{ br.idMarca }}" class="btn btn-info text-white">Editar</a>
                                     <a href="deleteMar/{{ br.idMarca }}" class="btn btn-danger">Eliminar</a>

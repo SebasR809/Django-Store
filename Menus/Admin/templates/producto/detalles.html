@@ -3,5 +3,44 @@
 {% block title %} Detalles del producto {% endblock %}
 
 {% block body %}
+<div class="row text-center">
     <h1>Detalles del producto</h1>
+</div>
+    <div class="card-tittle p-2">
+        <h5>DETALLES</h5>
+        <div class="card-body p-0">
+            <div class="row">
+                <form action="/addDetailProd" method="post">{%   csrf_token %}
+                    <div class="row">
+                        <input type="hidden" name="txtid" value="{{ p.idProduct }}">
+                        <div class="col">
+                            <label for="">Serial</label>
+                            <input type="text" name="txtserial" value="{{   d.serial }}" class="form-control" placeholder="Serial" required="">   
+                        </div>
+                        <div class="col">
+                            <label for="">color</label>
+                            <input type="text" name="txtcol" value="{{  d.color }}" class="form-control" placeholder="Color">   
+                        </div>
+                        <div class="col">
+                            <label for="">Peso</label>
+                            <input type="text" name="txtpeso" value="{{ d.peso }}" class="form-control" placeholder="Peso">   
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col">
+                            <label for="">Dimension</label>
+                            <input type="text" name="txtDim" value="{{  d.dimensiones }}" class="form-control" placeholder="Dimensiones">   
+                        </div>
+                        <div class="col">
+                            <label for="">Otra Imagen</label>
+                            <input type="file" value="" name="imgExtra" alt=""> 
+                        </div>
+                    </div><br>
+                    <div class="row text-center m-1">
+                        <button type="submit" class="btn btn-info btn-lg text-white">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock%}
