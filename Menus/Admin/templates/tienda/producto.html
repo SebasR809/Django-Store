@@ -18,7 +18,7 @@
                 </div> 
                 <div class="card-body p-0">
                     <div class="row">
-                        <p><b>Nombre: </b> {{ p.nomProd }} ({{ p.idCategoria }})</p>
+                        <p><b>Nombre: </b> {{ p.nomProd }} ({{ p.idCategoria.NomCat }})</p>
                         <p><b>Descripcion: </b>{{ p.descProd }}</p>
                         <p><b>Serial: </b>{{ d.serial }}</p>
                     </div>
@@ -55,7 +55,11 @@
                         </div>
                     </div>
                 </div><hr>
-                <button type="submit" class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#menucompra">Comprar</button>
+                {%  if log %}
+                    <button type="submit" class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#menucompra">Comprar</button>
+                {% else %}
+                    <button data-bs-toggle="offcanvas" class="btn btn-info text-white" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Iniciar Sesion</button>
+                {%  endif %}
             </div>
         </div>
     </div> 
@@ -69,7 +73,12 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+            {%  if log %}
+            {{    log.idUser}}
+            {% else %}
+            Ingresar
+            {%  endif %}
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

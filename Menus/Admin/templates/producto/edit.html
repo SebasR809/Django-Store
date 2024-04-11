@@ -9,6 +9,9 @@
 <div class="row mt-3">
     <div class="col col-lg-4">
         <img src="{{ product.imgProd.url }}" alt="" width="100%">
+        {% if detal.imgExtra %}
+            <img src="{{ detal.imgExtra.url }}" alt="" width="100%">
+        {% endif %}
     </div>
     <div class="col">
         <div class="row">
@@ -34,7 +37,7 @@
                                 <div class="col">
                                     <label for="slcMar">Marca</label>
                                     <select name="slcMar" id="slcMar" class="form-control">
-                                        <option value="{{ product.idMarca }}">{{ m.nomMarca }}</option>
+                                        <option value="{{ product.idMarca }}">{{ product.idMarca.nomMarca }}</option>
                                         {% for b in brand%}
                                             <option value="{{ b.idMarca }}">{{ b.nomMarca }}</option>
                                         {% endfor %}
@@ -43,7 +46,7 @@
                                 <div class="col">
                                     <label for="slcCat">Categoria</label>
                                     <select name="slcCat" id="slcCat" class="form-control form-control">
-                                        <option value="{{ product.idCategoria }}">{{ c.NomCat }}</option>
+                                        <option value="{{ product.idCategoria }}">{{ product.idCategoria.NomCat }}</option>
                                         {% for cat in categorie%}
                                             <option value="{{ cat.idCategoria }}">{{ cat.NomCat }}</option>
                                         {% endfor %}
@@ -97,11 +100,11 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="">Dimension</label>
-                                        <input type="text" name="txtDim" value="{{ detal.dimensiones }}" class="form-control" placeholder="Peso">   
+                                        <input type="text" name="txtDim" value="{{ detal.dimensiones }}" class="form-control" placeholder="Dimensiones">   
                                     </div>
                                     <div class="col">
                                         <label for="">Otra Imagen</label>
-                                        <input type="file" value="" name="imgExtra" alt=""> 
+                                        <input type="file" src="imgExtra" name="imgExtra" alt=""> 
                                         <input type="hidden" name="{{ detal.imgExtra }}">
                                     </div>
                                 </div><br>

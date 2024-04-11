@@ -1,15 +1,40 @@
 from django.shortcuts import render, redirect
-
+from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
+import hashlib
 #models
 from .models import Usuario, Categoria, Marca, tipodocumento, Producto, detallesProd
+
+from django.shortcuts import get_object_or_404
 
 def home(request):
     return render(request,"index.html")
 
+
+#Login
+def login(request):
+    user = request.POST.get('txtCorreo')
+    password = hashlib.md5(request.POST.get('txtPass').encode()).hexdigest()
+
+    per =  Usuario.objects.filter(Q(CorreoUser=user) & Q(Pass=password)).get()
+
+    if per is not None:
+        request.session['idUser'] = per.idUser
+        # return render(request, "index.html", {'log': per})
+        return redirect(request.META.get('HTTP_REFERER', 'index'))
+    else:
+        return redirect(request.META.get('HTTP_REFERER', 'index'))
+        # return render(request,"index.html",  {'error': 'Credenciales Invalidas'})
+    
+def logoutT(request):
+    logout(request)
+    return redirect('/')
+
 # Gestión Admin
 # Usuarios
 def userAdmin(request):
-    users = Usuario.objects.all()
+    users = Usuario.objects.all().order_by('-idUser')
     tipDoc = tipodocumento.objects.all()
     return render(request,'usuario/index.html', {'users': users, 'doc' : tipDoc})
 
@@ -30,9 +55,10 @@ def addUser(request):
         idTipDoc=tipDoc,
         numDocUser=doc,
         CorreoUser=mail,
-        Pass=contra,
+        Pass= hashlib.md5(contra.encode()).hexdigest(),
         DirUser=dir,
-        estado = 1
+        estado = 1,
+        rol = 2
     )
 
     return redirect('/usuarios')
@@ -67,7 +93,7 @@ def editarUser(request):
     User.idTipDoc = tipDoc
     User.numDocUser = doc
     User.CorreoUser = mail
-    User.Pass = contra
+    User.Pass = hashlib.md5(contra.encode()).hexdigest()
     User.DirUser = dir
     User.estado = est
     User.save()
@@ -153,7 +179,7 @@ def editarMar(request):
 # Productos
 # Administracion de productos
 def prodAdmin(request):
-    prod = Producto.objects.all()
+    prod = Producto.objects.all().order_by('nomProd')
     marca = Marca.objects.filter(estado=1)
     cat = Categoria.objects.filter(estado=1)
     return render(request,'producto/producto.html', {'prod' : prod,'brand' : marca, 'categorie' : cat})
@@ -194,9 +220,7 @@ def deleteProd(request, idProduct):
 def editProd(request, idProduct):
     prod = Producto.objects.get(idProduct=idProduct)
     marca = Marca.objects.all()
-    # m = Marca.objects.get(idMarca = Producto.objects.get(idProduct=idProduct pk))
     cat = Categoria.objects.all()
-    # c = Categoria.objects.get(idCategoria =  Producto.objects.get(idProduct=idProduct)), 'm' : m,  'c' : c
     detail = detallesProd.objects.filter(idProduct=idProduct).order_by('-idDetalleProd').first()
     return render(request,'producto/edit.html', {'product': prod,'brand' : marca, 'categorie' : cat, 'detal' : detail})
 
@@ -248,23 +272,31 @@ def detProdAdmin(request, idProduct):
 
 def addDetailProd(request):
 
-    prod = request.POST.get('txtid')
-    serial = request.POST.get('txtserial')
-    col = request.POST.get('txtcol')
-    peso = request.POST.get('txtpeso')
-    dim = request.POST.get('txtDim')
-    img = request.FILES.get('imgExtra')
+    campos = {
+        'prod': request.POST.get('txtid'),
+        'serial': request.POST.get('txtserial'),
+        'col': request.POST.get('txtcol'),
+        'peso': request.POST.get('txtpeso'),
+        'dim': request.POST.get('txtDim'),
+        'img': request.FILES.get('imgExtra')
+    }
 
-    #Instancias de los otros modelos para guardar la foreign key 
-    prod = Producto.objects.get(pk=prod)
+    # Asignar valores predeterminados si los campos están vacíos
+    campos['col'] = campos['col'] or 'No aplica'
+    campos['peso'] = campos['peso'] or 'No aplica'
+    campos['dim'] = campos['dim'] or 'No aplica'
 
-    detail = detallesProd.objects.create(
-        color =col,
-        peso =peso,
-        dimensiones=dim,
-        imgExtra=img,
-        serial=serial,
-        idProduct=prod
+    # Obtener la instancia del producto
+    producto = get_object_or_404(Producto, pk=campos['prod'])
+
+    # Crear el detalle del producto
+    detalle = detallesProd.objects.create(
+        color=campos['col'],
+        peso=campos['peso'],
+        dimensiones=campos['dim'],
+        imgExtra=campos['img'],
+        serial=campos['serial'],
+        idProduct=producto
     )
 
     return redirect('/productos')
@@ -272,6 +304,10 @@ def addDetailProd(request):
 #Tienda Virtual
 def shopAdmin(request):
     prod = Producto.objects.filter(estado=1).order_by('nomProd')
+
+    iduser = request.session.get('idUser')
+
+    print(iduser)
     
     return render(request,'tienda/index.html', {'prod' : prod})
 

@@ -26,6 +26,7 @@ class Usuario(models.Model):
     DirUser = models.CharField(max_length=150, verbose_name='Direccion')
     idTipDoc = models.ForeignKey(tipodocumento, on_delete=models.CASCADE, db_column='idTipDoc')
     estado = models.IntegerField(verbose_name='Estado')
+    rol = models.IntegerField(verbose_name='Rol')
 
     class Meta:
         managed = False
@@ -58,6 +59,10 @@ class Marca(models.Model):
          text = "{0}"
          return text.format(self.idMarca)
     
+    def nom(self):
+         text = "{0}"
+         return text.format(self.nomMarca)
+    
 class Producto(models.Model):
     idProduct = models.AutoField(primary_key=True)
     nomProd = models.CharField(max_length=100) 
@@ -72,12 +77,6 @@ class Producto(models.Model):
     class Meta:
         managed = False
         db_table = 'products'
-    
-    def precio(PrecioProd):
-        try:
-            return '{:,.0f}'.format(float(PrecioProd))
-        except(ValueError, TypeError):
-            return PrecioProd
 
     def delete(self, using: None, keep_parents:False):
         self.imgProd.storage.delete(self.imgProd.name)

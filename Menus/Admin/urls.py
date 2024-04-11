@@ -36,10 +36,11 @@ urlpatterns = [
     #Gestion Detalles
     path('detProdAdmin/<idProduct>', views.detProdAdmin, name='detallesProduct'),
     path('addDetailProd', views.addDetailProd),
-
     #Tienda Virtual
     path('tienda', views.shopAdmin, name='tienda'),
-    path('detalle/<idProduct>', views.prodCompra)
+    path('detalle/<idProduct>', views.prodCompra),
+    path('login', views.login),
+    path('logout', views.logoutT)
     
 
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

@@ -25,22 +25,37 @@
               <li class="nav-item">
                 <a class="nav-link active text-white" aria-current="page" href="{% url 'tienda' %}">Productos</a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-center text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Administracion
+              {%  if log %}
+                {%  if log.rol == 1%}
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-center text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administracion
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url 'users' %}">Usuarios</a></li>
+                      <li><a class="dropdown-item" href="{% url 'categorias' %}">Categorias</a></li>
+                      <li><a class="dropdown-item" href="{% url 'marcas' %}">Marcas</a></li>
+                      <li><a class="dropdown-item" href="{% url 'productos' %}">Productos</a></li>
+                    </ul>
+                  </li>
+                {% endif %}
+                <li class="nav-item ml-auto">
+                  <a class="nav-link active text-white" aria-current="page" href="#">{{ log.nomUser}} {{ log.apelUser }}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active text-white" aria-current="page" href="/logout">Cerrar Sesion</a>
+                </li>
+              {% else %}
+              <li class="nav-item ml-auto">
+                <a class="nav-link btn btn-primary text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    Iniciar Sesion
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'users' %}">Usuarios</a></li>
-                  <li><a class="dropdown-item" href="{% url 'categorias' %}">Categorias</a></li>
-                  <li><a class="dropdown-item" href="{% url 'marcas' %}">Marcas</a></li>
-                  <li><a class="dropdown-item" href="{% url 'productos' %}">Productos</a></li>
-                </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link btn btn-primary text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Iniciar Sesion</a>
-              </li>
+              {% endif %}
             </ul>
           </div>
+          <td>
+        </td>
         </div>
       </nav>
       <div class="container mt-4">
@@ -58,14 +73,14 @@
             <!-- inicio sesión  -->
           <div id="FormLogin" class="form-container">
             <h2>Login</h2>
-            <form>
+            <form action="/login" method="post">{%   csrf_token %}
                 <div class="mb-3">
                     <label for="user" class="form-label">Correo Electronico</label>
-                    <input type="text" class="form-control" id="user" name="user" style="background-color: #e8f0fe;">
+                    <input type="email" class="form-control" id="user" name="txtCorreo" style="background-color: #e8f0fe;" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" style="background-color: #e8f0fe;">
+                    <input type="password" class="form-control" id="password" name="txtPass" style="background-color: #e8f0fe;" required>
                 </div>
                 <center>
                   <button type="submit" class="btn btn-primary">Iniciar sesión</button>
@@ -82,13 +97,15 @@
                       <input type="text" name="txtNom" id="txtNom" placeholder="Nombre" class="form-control" required style="background-color: #e8f0fe;"><br>
                       <input type="text" name="txtApel" id="txtApel" placeholder="Apellido" class="form-control" required style="background-color: #e8f0fe;"><br>
                       <select name="slcTip" id="slcTip" class="form-control">
-                          {% for t in doc%}
-                              <option value="{{ t.idTipDoc }}">{{ t.nomTipDoc }}</option>
-                          {% endfor %}
+                        <option value="1">CC</option>
+                        <option value="2">CE</option>
+                        <option value="3">TI</option>
+                        <option value="4">PA</option>
+                        <option value="5">RC</option>
                       </select><br>
                       <input type="text" name="txtDoc" id="txtDoc" placeholder="Numero Documento" class="form-control" required style="background-color: #e8f0fe;"><br>
                       <input type="text" name="txtdir" id="txtdir" placeholder="Direccion"  class="form-control" required style="background-color: #e8f0fe;"><br>
-                      <input type="text" name="txtMail" id="txtMail" placeholder="Correo" class="form-control"  required style="background-color: #e8f0fe;"><br>
+                      <input type="email" name="txtMail" id="txtMail" placeholder="Correo" class="form-control"  required style="background-color: #e8f0fe;"><br>
                       <input type="password" name="txtPass" id="txtPass" placeholder="Contrasena" class="form-control"  required style="background-color: #e8f0fe;"><br>
                       <input type="password" name="txtCPass" id="txtPass" placeholder="confirmar Contrasena" class="form-control"  required style="background-color: #e8f0fe;"><br>
                       <center>

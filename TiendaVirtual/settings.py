@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Menus.Admin.context_processors.add_logged_user'
             ],
         },
     },
@@ -131,3 +132,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'imagenesProd')
 MEDIA_URL = '/imagenesProd/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+
+
