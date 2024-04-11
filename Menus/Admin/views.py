@@ -21,11 +21,9 @@ def login(request):
 
     if per is not None:
         request.session['idUser'] = per.idUser
-        # return render(request, "index.html", {'log': per})
         return redirect(request.META.get('HTTP_REFERER', 'index'))
     else:
         return redirect(request.META.get('HTTP_REFERER', 'index'))
-        # return render(request,"index.html",  {'error': 'Credenciales Invalidas'})
     
 def logoutT(request):
     logout(request)
@@ -61,7 +59,7 @@ def addUser(request):
         rol = 2
     )
 
-    return redirect('/usuarios')
+    return redirect(request.META.get('HTTP_REFERER', 'index'))
 
 def deleteUser(request, idUser):
     User = Usuario.objects.get(idUser=idUser)
